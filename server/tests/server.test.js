@@ -222,7 +222,7 @@ describe('POST /users', () => {
 
         request(app)
             .post('/users')
-            .send({email, password})
+            .send({ email, password })
             .expect(200)
             .expect((res) => {
                 expect(res.headers['x-auth']).toExist();
@@ -242,11 +242,24 @@ describe('POST /users', () => {
             });
     }, (e) => { });
 
-    it('should validation errors if request invalid', (done) => {
+    it('should validation errors if request invalid', (done) => {       
+        request(app)
+            .post('/users')
+            .send({ 
+                email: 'xyz',
+                password: '123' })
+            .expect(400)
+            .end(done);
+    }, (e) => { });
 
-    });
-
-    it('should not create user if email in use', (done) => {
-
+    it('should not create user if email in use', (done) => {      
+        request(app)
+        .post('/users')
+        .send({ 
+            email: users[0].email,
+            password: 'Password123'
+        })
+        .expect(400)
+        .end(done);
     });
 });
